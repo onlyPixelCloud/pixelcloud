@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/pixelcloud-api" />
             <option value="$PROJECT_DIR$/pixelcloud-config" />
             <option value="$PROJECT_DIR$/pixelcloud-master" />
+            <option value="$PROJECT_DIR$/pixelcloud-networking" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -17,14 +17,19 @@ public abstract class ISetup {
     private SetupInput currentInput;
     private SetupEnd setupEnd;
 
-    public void setSetupInputs(SetupInput... setupInputs){
+    public void setSetupInputs(SetupInput... setupInputs) {
         this.setupInputs = setupInputs;
         this.currentInput = setupInputs[0];
+
+        if (CloudMaster.getInstance().getSetupBuilder().getCurrentSetup() != null) {
+            CloudMaster.getInstance().getCloudLogger().severe("A setup is already running!");
+            return;
+        }
 
         CloudMaster.getInstance().setSetupBuilder(new SetupBuilder(this, setupEnd, setupInputs));
     }
 
-    public void setSetupEnd(SetupEnd setupEnd){
+    public void setSetupEnd(SetupEnd setupEnd) {
         this.setupEnd = setupEnd;
     }
 

@@ -1,17 +1,20 @@
 package de.haizon.pixelcloud.master.console.setups.node;
 
 import de.haizon.pixelcloud.master.CloudMaster;
+import de.haizon.pixelcloud.master.backend.http.HttpFetcher;
 import de.haizon.pixelcloud.master.backend.json.JsonLib;
 import de.haizon.pixelcloud.master.console.setups.abstracts.SetupEnd;
 import de.haizon.pixelcloud.master.console.setups.abstracts.SetupInput;
 import de.haizon.pixelcloud.master.console.setups.interfaces.ISetup;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 public class GroupSetupNode extends ISetup {
 
-    private String name, template, versionType, version;
+    private String name, template, versionType, version, serviceType;
     private int maxPlayers, maxServices, minServices, percentageToStartNewService, startPort;
 
     public GroupSetupNode() {
@@ -23,18 +26,22 @@ public class GroupSetupNode extends ISetup {
                 JsonLib jsonLib = JsonLib.empty();
                 jsonLib.append("name", name);
                 jsonLib.append("template", template);
-//                jsonLib.append("versionType", versionType);
-//                jsonLib.append("version", version);
-//                jsonLib.append("maxPlayers", maxPlayers);
-//                jsonLib.append("maxServices", maxServices);
-//                jsonLib.append("minServices", minServices);
-//                jsonLib.append("percentageToStartNewService", percentageToStartNewService);
-//                jsonLib.append("startPort", startPort);
+                jsonLib.append("versionType", versionType);
+                jsonLib.append("version", version);
+                jsonLib.append("serviceType", serviceType);
+                jsonLib.append("maxPlayers", maxPlayers);
+                jsonLib.append("maxServices", maxServices);
+                jsonLib.append("minServices", minServices);
+                jsonLib.append("percentageToStartNewService", percentageToStartNewService);
+                jsonLib.append("startPort", startPort);
 
                 jsonLib.saveAsFile(new File("groups", name + ".json"));
 
             }
         });
+
+        List<String> versionTypes = new LinkedList<>();
+        HttpFetcher.fetchJson("").getArray("types").forEach(version -> versionTypes.add(version.getAsString()));
 
         setSetupInputs(new SetupInput("Please enter the name of the group") {
             @Override
@@ -84,12 +91,17 @@ public class GroupSetupNode extends ISetup {
         }, new SetupInput("Please enter the version type of the group") {
             @Override
             public List<String> getSuggestions() {
-                return null;
+                return versionTypes;
             }
 
             @Override
             public boolean handle(String input) {
-                return false;
+                if (!versionTypes.contains(input)) {
+                    CloudMaster.getInstance().getCloudLogger().severe("The version type doesn't exist!");
+                    return false;
+                }
+                versionType = input;
+                return versionTypes.contains(input);
             }
         });
 

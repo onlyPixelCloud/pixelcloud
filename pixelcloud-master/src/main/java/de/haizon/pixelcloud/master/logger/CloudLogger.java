@@ -140,7 +140,9 @@ public class CloudLogger extends Logger implements ICloudLogger {
         }
         Arrays.stream(files).forEach(file -> {
             if (isOlder(file)) {
-                file.delete();
+                if(!file.delete()){
+                    write(LogType.ERROR, "Cannot delete old log files...");
+                }
             }
         });
     }

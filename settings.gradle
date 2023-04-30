@@ -2,4 +2,5 @@ rootProject.name = 'pixelcloud-recode'
 include 'pixelcloud-config'
 include 'pixelcloud-master'
 include 'pixelcloud-api'
+include 'pixelcloud-networking'
 

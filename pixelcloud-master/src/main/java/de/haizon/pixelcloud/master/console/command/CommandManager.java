@@ -4,6 +4,7 @@ import de.haizon.pixelcloud.master.api.Command;
 import de.haizon.pixelcloud.master.api.ICommandHandler;
 import de.haizon.pixelcloud.master.commands.CreateCommand;
 import de.haizon.pixelcloud.master.commands.HelpCommand;
+import de.haizon.pixelcloud.master.commands.StopCommand;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -23,7 +24,7 @@ public class CommandManager {
     public CommandManager() {
         this.commandHandlers = new HashMap<>();
 
-        register(HelpCommand.class, CreateCommand.class);
+        register(HelpCommand.class, CreateCommand.class, StopCommand.class);
     }
 
     @SafeVarargs
