@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+group 'de.haizon'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.fusesource.jansi:jansi:1.18'
+    implementation 'org.jline:jline:3.23.0'
+}
+
+test {
+    useJUnitPlatform()
+}

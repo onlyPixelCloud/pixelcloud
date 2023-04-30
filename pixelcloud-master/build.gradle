@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+}
+
+group 'de.haizon'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.jline:jline:3.23.0'
+    implementation 'mysql:mysql-connector-java:8.0.30'
+    implementation 'com.google.code.gson:gson:2.8.7'
+    implementation project(path: ':pixelcloud-api')
+}
+
+configurations.implementation.setCanBeResolved(true)
+compileJava.options.encoding = 'UTF-8'
+
+jar {
+    archiveBaseName = "pixelcloud-master"
+    manifest {
+        attributes 'Main-Class': 'de.haizon.pixelcloud.master.CloudMaster'
+    }
+    from {
+        configurations.implementation.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
