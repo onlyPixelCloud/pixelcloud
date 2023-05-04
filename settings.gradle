@@ -3,4 +3,5 @@ include 'pixelcloud-config'
 include 'pixelcloud-master'
 include 'pixelcloud-api'
 include 'pixelcloud-networking'
+include 'pixelcloud-networking'
 

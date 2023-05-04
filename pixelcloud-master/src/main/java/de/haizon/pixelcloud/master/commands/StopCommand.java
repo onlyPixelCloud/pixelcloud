@@ -17,8 +17,15 @@ public class StopCommand implements ICommandHandler {
 
         //TODO: stop all the services
 
-        System.exit(0);
+        try {
+            CloudMaster.getInstance().getCloudServer().getNettyServer().shutdown();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         CloudMaster.getInstance().getConsoleManager().stopThread();
+        System.exit(0);
+
 
     }
 

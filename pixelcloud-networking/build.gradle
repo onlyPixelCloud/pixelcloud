@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+group 'de.haizon'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        name "haizonPrivate"
+        url "https://repository.haizon.de/private"
+        credentials{
+            username = project.property("mavenUser")
+            password = project.property("mavenPassword")
+        }
+    }
+}
+
+dependencies {
+    implementation 'de.princessheaven.aether:aether-packetlibary:1.1.0-RC1'
+    implementation project(path: ':pixelcloud-api')
+}
+
+test {
+    useJUnitPlatform()
+}

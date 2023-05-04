@@ -5,7 +5,6 @@ import de.haizon.pixelcloud.api.console.IConsoleSender;
 import de.haizon.pixelcloud.master.CloudMaster;
 import de.haizon.pixelcloud.master.api.Command;
 import de.haizon.pixelcloud.master.api.ICommandHandler;
-import de.haizon.pixelcloud.master.console.setups.node.GroupSetupNode;
 import org.jline.reader.Candidate;
 
 import java.util.Arrays;
@@ -31,7 +30,7 @@ public class CreateCommand implements ICommandHandler {
 
         if(args.length == 2){
             if(args[1].equalsIgnoreCase("group")){
-                new GroupSetupNode();
+//                new GroupSetupNode();
                 return;
             }
             if(args[1].equalsIgnoreCase("template")){

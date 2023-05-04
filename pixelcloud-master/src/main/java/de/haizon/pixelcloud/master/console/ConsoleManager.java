@@ -3,7 +3,6 @@ package de.haizon.pixelcloud.master.console;
 import de.haizon.pixelcloud.master.api.ICommandHandler;
 import de.haizon.pixelcloud.api.console.Color;
 import de.haizon.pixelcloud.master.CloudMaster;
-import de.haizon.pixelcloud.master.console.setups.SetupBuilder;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jline.reader.UserInterruptException;
@@ -72,13 +71,14 @@ public class ConsoleManager {
 
     public void handleInput(String input) {
 
-        SetupBuilder setupBuilder = CloudMaster.getInstance().getSetupBuilder();
+        SetupWrapper setupWrapper = CloudMaster.getInstance().getSetupWrapper();
 
-        if (setupBuilder.getCurrentSetup() != null) {
+        if (setupWrapper.isRunning()) {
             if (input.equalsIgnoreCase("end")) {
-                setupBuilder.cancel();
+                setupWrapper.cancel();
+                return;
             }
-            setupBuilder.nextQuestion(setupBuilder.getCurrentSetup().getCurrentInput().handle(input));
+            setupWrapper.handle(input);
             return;
         }
 

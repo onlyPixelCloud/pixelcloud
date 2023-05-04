@@ -7,6 +7,14 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven {
+        name "haizonPrivate"
+        url "https://repository.haizon.de/private"
+        credentials{
+            username = project.property("mavenUser")
+            password = project.property("mavenPassword")
+        }
+    }
 }
 
 dependencies {
@@ -14,6 +22,9 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.30'
     implementation 'com.google.code.gson:gson:2.8.7'
     implementation project(path: ':pixelcloud-api')
+    implementation project(path: ':pixelcloud-networking')
+    implementation project(path: ':pixelcloud-networking')
+    compileOnly 'de.princessheaven.aether:aether-packetlibary:1.1.0-RC1'
 }
 
 configurations.implementation.setCanBeResolved(true)

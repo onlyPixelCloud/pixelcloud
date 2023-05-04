@@ -6,12 +6,13 @@ import de.haizon.pixelcloud.master.backend.database.DatabaseNode;
 import de.haizon.pixelcloud.master.backend.dependencies.Dependency;
 import de.haizon.pixelcloud.master.backend.dependencies.DependencyLoader;
 import de.haizon.pixelcloud.master.backend.files.FileManager;
+import de.haizon.pixelcloud.master.backend.manager.CloudGroupManager;
 import de.haizon.pixelcloud.master.console.ConsoleManager;
 import de.haizon.pixelcloud.master.console.ConsoleSender;
 import de.haizon.pixelcloud.master.console.command.CommandManager;
-import de.haizon.pixelcloud.master.console.setups.SetupBuilder;
-import de.haizon.pixelcloud.master.console.setups.node.DatabaseSetupNode;
+import de.haizon.pixelcloud.master.console.SetupWrapper;
 import de.haizon.pixelcloud.master.logger.CloudLogger;
+import de.haizon.pixelcloud.networking.server.CloudServer;
 
 import java.io.IOException;
 
@@ -21,12 +22,16 @@ public class CloudMaster {
 
     private final CloudLogger cloudLogger;
     private final ConsoleManager consoleManager;
-    private SetupBuilder setupBuilder;
-    private CommandManager commandManager;
+    private final CommandManager commandManager;
     private final IConsoleSender consoleSender;
     private final DependencyLoader dependencyLoader;
     private final FileManager fileManager;
+
+    private SetupWrapper setupWrapper;
     private DatabaseNode databaseNode;
+    private CloudGroupManager cloudGroupManager;
+
+    private CloudServer cloudServer;
 
     public static void main(String[] args) {
         try {
@@ -78,11 +83,11 @@ public class CloudMaster {
         cloudLogger.cleared("     " + Color.GREEN.getColor() + "✔ " + Color.RESET.getColor() + " Successfully loaded " + dependencyLoader.getDependencies().size() + " dependencies");
 
         consoleSender = new ConsoleSender();
-        setupBuilder = new SetupBuilder();
+        setupWrapper = new SetupWrapper();
         commandManager = new CommandManager();
 
         if(!fileManager.fileExists("storage", "database.json")){
-            new DatabaseSetupNode();
+//            new DatabaseSetupNode();
             return;
         }
         databaseNode = new DatabaseNode();
@@ -92,8 +97,23 @@ public class CloudMaster {
             cloudLogger.cleared("     " + Color.RED.getColor() + "✘ " + Color.RESET.getColor() + " Failed to connect to database");
         }
 
+        cloudGroupManager = new CloudGroupManager();
+        if(cloudGroupManager.loadGroups() > 0){
+            cloudLogger.cleared("     " + Color.GREEN.getColor() + "✔ " + Color.RESET.getColor() + " Successfully loaded " + cloudGroupManager.getCloudGroups().size() + " cloud groups");
+        }
+
+        cloudServer = new CloudServer(cloudLogger);
+
         cloudLogger.cleared(" ".repeat(20));
 
+    }
+
+    public CloudServer getCloudServer() {
+        return cloudServer;
+    }
+
+    public CloudGroupManager getCloudGroupManager() {
+        return cloudGroupManager;
     }
 
     public DatabaseNode getDatabaseNode() {
@@ -112,12 +132,8 @@ public class CloudMaster {
         return consoleSender;
     }
 
-    public void setSetupBuilder(SetupBuilder setupBuilder) {
-        this.setupBuilder = setupBuilder;
-    }
-
-    public SetupBuilder getSetupBuilder() {
-        return setupBuilder;
+    public SetupWrapper getSetupWrapper() {
+        return setupWrapper;
     }
 
     public CommandManager getCommandManager() {

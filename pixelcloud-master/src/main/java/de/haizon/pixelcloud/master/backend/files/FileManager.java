@@ -1,6 +1,8 @@
 package de.haizon.pixelcloud.master.backend.files;
 
 import java.io.File;
+import java.util.List;
+import java.util.Objects;
 
 public class FileManager {
 
@@ -28,6 +30,14 @@ public class FileManager {
         if(!file.exists()){
             file.mkdirs();
         }
+    }
+
+    public List<File> listFiles(String folder){
+        File file = new File(folder);
+        if(file.exists()){
+            return List.of(Objects.requireNonNull(file.listFiles()));
+        }
+        return null;
     }
 
 }
