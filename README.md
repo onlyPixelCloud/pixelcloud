@@ -9,7 +9,7 @@ PixelCloud is an innovative cloud-based system for Minecraft, which allows users
 ## Authors
 
 - [@Haizoooon](https://www.github.com/Haizoooon) Cloud coding and other stuff
-- [@ShyLisaaa](https://www.github.com/ShyLisaaa) Netty server/client coding
+- [@ShyLisaa](https://www.github.com/ShyLisaa) Netty server/client coding
 
 ## Documentation
 
